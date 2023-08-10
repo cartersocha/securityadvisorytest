@@ -1,15 +1,22 @@
 name: SlackTest
 
 on:
-  push:
-    branches:
-      - main
+    schedule:
+      - cron: "*/1 * * * *"
+  
 
 jobs:
   send_to_slack:
     runs-on: ubuntu-latest
 
     steps:
+      - name: GetSecurityInfo
+        id: security-advisories
+        run: |
+          advisories=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/security/advisories?state=open")
+          echo "::set-output name=advisories::$advisories"
+
       - name: Post to a Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
@@ -17,7 +24,7 @@ jobs:
           channel-id: 'securitytesting'
           payload: |
             {
-              "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "text": "GitHub Action build result: ${{ steps.security-advisories.outputs.advisories }}",
               "blocks": [
                 {
                   "type": "section",
