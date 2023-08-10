@@ -3,7 +3,7 @@ name: SlackTest
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   send_to_slack:
