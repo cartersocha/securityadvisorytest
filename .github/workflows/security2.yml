@@ -3,7 +3,9 @@ name: SlackTest
 on:
     schedule:
       - cron: "*/1 * * * *"
-  
+    push:
+        branches:
+            - main
 
 jobs:
   send_to_slack:
