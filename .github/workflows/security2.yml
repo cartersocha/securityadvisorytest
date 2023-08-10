@@ -16,7 +16,7 @@ jobs:
         id: security-advisories
         run: |
           advisories=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/security/advisories?state=draft")
+            "https://api.github.com/repos/${{ github.repository }}/security/advisories")
           echo "::set-output name=advisories::$advisories"
 
       - name: Post to a Slack channel
