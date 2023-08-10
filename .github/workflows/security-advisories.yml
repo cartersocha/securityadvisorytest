@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+  security_advisory:
+    types:
+    - created
+
 jobs:
   send_to_slack:
     runs-on: ubuntu-latest
@@ -14,7 +18,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.24.0
         with:
-          channel-id: 'your_slack_channel_here'
+          channel-id: 'securitytesting'
           payload: |
             {
               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
